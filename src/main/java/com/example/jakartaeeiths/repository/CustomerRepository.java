@@ -4,6 +4,7 @@ import com.example.jakartaeeiths.entity.Customer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,5 +21,14 @@ public class CustomerRepository implements Serializable {
                 .getResultList();
     }
 
+    @Transactional
+    public Customer add(Customer customer) {
+        entityManager.persist(customer);
+        return customer;
+    }
+    
+    public Customer findById(long id) {
+        return entityManager.find(Customer.class, id);
+    }
     // query + @Transactional methods
 }
