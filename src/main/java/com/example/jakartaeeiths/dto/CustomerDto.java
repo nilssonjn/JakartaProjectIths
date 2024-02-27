@@ -4,6 +4,7 @@ import com.example.jakartaeeiths.entity.Customer;
 
 public record  CustomerDto (String firstName, String surname, int age) {
 
+
     public static CustomerDto map(Customer customer) {
         return new CustomerDto(customer.getCustomerFirstName(),
                 customer.getCustomerSurname(),
@@ -18,4 +19,5 @@ public record  CustomerDto (String firstName, String surname, int age) {
         customer.setCustomerAge(customerDto.age);
         return customer;
     }
+
 }

@@ -30,5 +30,29 @@ public class CustomerRepository implements Serializable {
     public Customer findById(long id) {
         return entityManager.find(Customer.class, id);
     }
-    // query + @Transactional methods
+
+
+    /**deletes customer*/
+    @Transactional
+    public void deleteById(long id) {
+        // Retrieve the customer object using the ID
+        Customer customer = entityManager.find(Customer.class, id);
+
+        // Check if customer exists before deletion
+        if (customer != null) {
+            // Remove the customer
+            entityManager.remove(customer);
+        } else {
+            System.out.println("error");
+        }
+    }
+
+    @Transactional
+    public Customer update(long id, CustomerDto customerDto) {
+        Customer customer = entityManager.find(Customer.class, id);
+        customer.setCustomerFirstName(customerDto.firstName());
+        entityManager.flush();
+        return customer;
+    }
+
 }
