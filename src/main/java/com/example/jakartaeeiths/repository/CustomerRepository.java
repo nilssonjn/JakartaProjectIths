@@ -1,5 +1,6 @@
 package com.example.jakartaeeiths.repository;
 
+import com.example.jakartaeeiths.dto.CustomerDto;
 import com.example.jakartaeeiths.entity.Customer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;

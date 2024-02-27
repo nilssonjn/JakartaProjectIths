@@ -77,6 +77,6 @@ public class CustomerResource {
     public Customer update(@PathParam("id") long id, CustomerDto customerDto)  {
         return customerRepository.update(id, customerDto);
     }
-    
+
     //https://jakarta.ee/learn/starter-guides/how-to-store-and-retrieve-data-using-jakarta-persistence/
 }
