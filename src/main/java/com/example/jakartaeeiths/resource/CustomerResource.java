@@ -11,7 +11,6 @@ import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Path("/customers")
 public class CustomerResource {
@@ -23,12 +22,6 @@ public class CustomerResource {
     public CustomerResource(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-
-    //    @GET
-//    @Produces("text/plain")
-//    public String hello() {
-//        return "Hello, World!";
-//    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -44,6 +37,14 @@ public class CustomerResource {
         return new Customers(
                 customerRepository.getAll().stream().map(CustomerDto::map).toList(),
                 LocalDateTime.now());
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public Customer getOneById(@PathParam("id") long id) {
+        return customerRepository.findById(id);
+
     }
 
     // CREATE

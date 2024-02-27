@@ -11,7 +11,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customerId", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Size(max = 50)
     @Column(name = "customerFirstName", length = 50)
@@ -24,11 +24,11 @@ public class Customer {
     @Column(name = "customerAge")
     private Integer customerAge;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
