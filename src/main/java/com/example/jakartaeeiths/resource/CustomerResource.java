@@ -36,6 +36,7 @@ public class CustomerResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Customers getAll() {
+
         return customerService.all();
     }
 
