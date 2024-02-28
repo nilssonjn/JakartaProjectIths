@@ -7,6 +7,8 @@ import com.example.jakartaeeiths.repository.CustomerRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 import java.time.LocalDateTime;
 
@@ -26,8 +28,12 @@ public class CustomerService {
 
     public CustomerDto one(long id) {
         var customer = customerRepository.findById(id);
-        if (customer == null)
-            throw new NotFoundException("Invalid id " + id);
+        if (customer==null)
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+
+        if (customer.getCustomerAge() == null || customer.getCustomerSurname() == null || customer.getCustomerFirstName() == null)
+            throw new WebApplicationException(Response.Status.FORBIDDEN);
+
         return CustomerDto.map(customer);
     }
     public Customers all() {
