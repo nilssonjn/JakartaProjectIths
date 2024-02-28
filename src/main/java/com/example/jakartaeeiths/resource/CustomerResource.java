@@ -2,9 +2,9 @@ package com.example.jakartaeeiths.resource;
 
 import com.example.jakartaeeiths.dto.CustomerDto;
 import com.example.jakartaeeiths.dto.Customers;
-import com.example.jakartaeeiths.entity.Customer;
-import com.example.jakartaeeiths.repository.CustomerRepository;
+import com.example.jakartaeeiths.service.CustomerService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -14,29 +14,28 @@ import java.time.LocalDateTime;
 
 @Path("/customers")
 public class CustomerResource {
-    CustomerRepository customerRepository;
+
+    private CustomerService customerService;
     public CustomerResource() {
     }
 
     @Inject
-    public CustomerResource(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public CustomerResource(CustomerService customerRepository) {
+        this.customerService = customerRepository;
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response sayHello() {
-        String message = "Hello!";
-        return Response.ok(message).build();
-    }
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response sayHello() {
+//        String message = "Hello!";
+//        return Response.ok(message).build();
+//    }
 
     /**READ*/
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Customers getAll() {
-        return new Customers(
-                customerRepository.getAll().stream().map(CustomerDto::map).toList(),
-                LocalDateTime.now());
+        return customerService.all();
     }
 
     @GET
@@ -53,7 +52,8 @@ public class CustomerResource {
     public Response create(CustomerDto customerDto) {
         var c = customerRepository.add(CustomerDto.map(customerDto));
 
-        return Response.created(URI.create("http://localhost:8080/JakartaEEiths-1.0-SNAPSHOT/api/customers" + c.getId()))
+        return Response.created(
+                URI.create("http://localhost:8080/JakartaEEiths-1.0-SNAPSHOT/api/customers" + c.getId()))
                 .build();
     }
 
