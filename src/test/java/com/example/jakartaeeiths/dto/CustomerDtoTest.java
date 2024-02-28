@@ -75,8 +75,8 @@ class CustomerDtoTest {
     }
 
     @Test
-    @DisplayName("tiasnfis")
-    void tiasnfis() {
+    @DisplayName("Mapping CustomerDto to Customer")
+    void mappingCustomerDtoToCustomer() {
         CustomerDto customerDto = new CustomerDto("test", "person", 15);
 
         Customer customer = CustomerDto.map(customerDto);
