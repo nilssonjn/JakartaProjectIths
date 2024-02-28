@@ -2,6 +2,7 @@ package com.example.jakartaeeiths.resource;
 
 import com.example.jakartaeeiths.dto.CustomerDto;
 import com.example.jakartaeeiths.dto.Customers;
+import com.example.jakartaeeiths.entity.Customer;
 import com.example.jakartaeeiths.service.CustomerService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -64,7 +65,7 @@ public class CustomerResource {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteById(@PathParam("id") long id) {
-        customerRepository.deleteById(id);
+        customerService.deleteById(id);
         return Response.noContent().build();
     }
 
@@ -75,7 +76,7 @@ public class CustomerResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Customer update(@PathParam("id") long id, CustomerDto customerDto)  {
-        return customerRepository.update(id, customerDto);
+        return customerService.update(id, customerDto);
     }
 
     //https://jakarta.ee/learn/starter-guides/how-to-store-and-retrieve-data-using-jakarta-persistence/

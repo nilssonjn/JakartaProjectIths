@@ -40,4 +40,13 @@ public class CustomerService {
         var p = customerRepository.add(CustomerDto.map(customerDto));
         return p;
     }
+
+    public Customer update(long id, CustomerDto customerDto) {
+        var p = customerRepository.update(id, customerDto);
+        return p;
+    }
+
+    public void deleteById(long id) {
+      customerRepository.deleteById(id);
+    }
 }
