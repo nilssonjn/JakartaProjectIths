@@ -41,16 +41,16 @@ public class CustomerResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Customer getOneById(@PathParam("id") long id) {
-        return customerRepository.findById(id);
+    public CustomerDto getOneById(@PathParam("id") long id) {
+        return customerService.one(id);
 
     }
 
     // CREATE
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(CustomerDto customerDto) {
-        var c = customerRepository.add(CustomerDto.map(customerDto));
+    public Response create(@Valid CustomerDto customerDto) {
+        var c = customerService.add(customerDto);
 
         return Response.created(
                 URI.create("http://localhost:8080/JakartaEEiths-1.0-SNAPSHOT/api/customers" + c.getId()))
