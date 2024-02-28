@@ -59,11 +59,24 @@ public class CustomerResource {
 
 
 
-
-
+    // DELETE
+    @DELETE
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteById(@PathParam("id") long id) {
+        customerRepository.deleteById(id);
+        return Response.noContent().build();
+    }
 
 
     // UPDATE
+    @PATCH
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Customer update(@PathParam("id") long id, CustomerDto customerDto)  {
+        return customerRepository.update(id, customerDto);
+    }
 
-    // DELETE
+    //https://jakarta.ee/learn/starter-guides/how-to-store-and-retrieve-data-using-jakarta-persistence/
 }
