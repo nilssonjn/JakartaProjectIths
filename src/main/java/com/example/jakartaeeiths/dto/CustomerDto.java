@@ -1,8 +1,12 @@
 package com.example.jakartaeeiths.dto;
 
 import com.example.jakartaeeiths.entity.Customer;
+import com.example.jakartaeeiths.validate.Age;
+import jakarta.validation.constraints.NotEmpty;
 
-public record  CustomerDto (String firstName, String surname, int age) {
+public record  CustomerDto (@NotEmpty String firstName,
+                            @NotEmpty String surname,
+                            @Age(message = "Age must be between 0 and 150") int age) {
 
 
     public static CustomerDto map(Customer customer) {

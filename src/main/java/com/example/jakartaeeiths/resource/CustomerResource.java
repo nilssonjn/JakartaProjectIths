@@ -3,8 +3,9 @@ package com.example.jakartaeeiths.resource;
 import com.example.jakartaeeiths.dto.CustomerDto;
 import com.example.jakartaeeiths.dto.Customers;
 import com.example.jakartaeeiths.entity.Customer;
-import com.example.jakartaeeiths.repository.CustomerRepository;
+import com.example.jakartaeeiths.service.CustomerService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -14,46 +15,46 @@ import java.time.LocalDateTime;
 
 @Path("/customers")
 public class CustomerResource {
-    CustomerRepository customerRepository;
+
+    private CustomerService customerService;
     public CustomerResource() {
     }
 
     @Inject
-    public CustomerResource(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public CustomerResource(CustomerService customerRepository) {
+        this.customerService = customerRepository;
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response sayHello() {
-        String message = "Hello!";
-        return Response.ok(message).build();
-    }
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response sayHello() {
+//        String message = "Hello!";
+//        return Response.ok(message).build();
+//    }
 
     /**READ*/
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Customers getAll() {
-        return new Customers(
-                customerRepository.getAll().stream().map(CustomerDto::map).toList(),
-                LocalDateTime.now());
+        return customerService.all();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Customer getOneById(@PathParam("id") long id) {
-        return customerRepository.findById(id);
+    public CustomerDto getOneById(@PathParam("id") long id) {
+        return customerService.one(id);
 
     }
 
     // CREATE
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(CustomerDto customerDto) {
-        var c = customerRepository.add(CustomerDto.map(customerDto));
+    public Response create(@Valid CustomerDto customerDto) {
+        var c = customerService.add(customerDto);
 
-        return Response.created(URI.create("http://localhost:8080/JakartaEEiths-1.0-SNAPSHOT/api/customers" + c.getId()))
+        return Response.created(
+                URI.create("http://localhost:8080/JakartaEEiths-1.0-SNAPSHOT/api/customers" + c.getId()))
                 .build();
     }
 
@@ -64,7 +65,7 @@ public class CustomerResource {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteById(@PathParam("id") long id) {
-        customerRepository.deleteById(id);
+        customerService.deleteById(id);
         return Response.noContent().build();
     }
 
@@ -75,7 +76,7 @@ public class CustomerResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Customer update(@PathParam("id") long id, CustomerDto customerDto)  {
-        return customerRepository.update(id, customerDto);
+        return customerService.update(id, customerDto);
     }
 
     //https://jakarta.ee/learn/starter-guides/how-to-store-and-retrieve-data-using-jakarta-persistence/
