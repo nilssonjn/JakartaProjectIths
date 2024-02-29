@@ -34,8 +34,8 @@ public class CustomerService {
         if (customer == null)
             throw new WebApplicationException(Response.Status.NOT_FOUND);
 
-        if (customer.getCustomerAge() == null || customer.getCustomerSurname() == null || customer.getCustomerFirstName() == null)
-            throw new WebApplicationException(Response.Status.FORBIDDEN);
+        if (customer.getCustomerAge() == null || customer.getCustomerSurname() == null || customer.getCustomerFirstName() == null) // if data is missing from table
+            throw new WebApplicationException(Response.Status.NO_CONTENT);
 
         return CustomerDto.map(customer);
     }
@@ -54,11 +54,13 @@ public class CustomerService {
     public Customer add(CustomerDto customerDto) {
         var c = customerRepository.add(CustomerDto.map(customerDto));
         return c;
+        // todo add http exception ???
     }
 
     public Customer update(long id, CustomerDto customerDto) {
         var c = customerRepository.update(id, customerDto);
         return c;
+        // todo add http exception ???
     }
 
     public void deleteById(long id) {

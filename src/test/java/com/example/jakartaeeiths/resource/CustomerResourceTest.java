@@ -3,9 +3,12 @@ package com.example.jakartaeeiths.resource;
 import com.example.jakartaeeiths.dto.CustomerDto;
 import com.example.jakartaeeiths.dto.Customers;
 import com.example.jakartaeeiths.entity.Customer;
+import com.example.jakartaeeiths.repository.CustomerRepository;
 import com.example.jakartaeeiths.service.CustomerService;
 import jakarta.ejb.Local;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.mock.MockDispatcherFactory;
 import org.jboss.resteasy.mock.MockHttpRequest;
 import org.jboss.resteasy.mock.MockHttpResponse;
@@ -21,13 +24,13 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -111,8 +114,8 @@ class CustomerResourceTest {
     }
 
     @Test
-    @DisplayName("Server failure will cause 500 v2")
-    void serverFailureWillCause500V2 () throws Exception {
+    @DisplayName("Server failure will cause 500")
+    void serverFailureWillCause500() throws Exception {
         when(customerService.all()).thenThrow(new RuntimeException("Server failure"));
 
         // Create a mock request and response
@@ -122,6 +125,22 @@ class CustomerResourceTest {
 
         // Assert the response status code is 500 (Internal Server Error)
         assertEquals(500, response.getStatus());
+    }
+
+    @Test
+    @DisplayName("if customer is null then return 204")
+    void ifCustomerIsNullThenReturn404() throws Exception {
+
+        when(customerService.one(1L)).thenReturn(null);
+        // use "one" method in customerService to test
+        MockHttpRequest request = MockHttpRequest.get("/customers/1");
+        MockHttpResponse response = new MockHttpResponse();
+        dispatcher.invoke(request, response);
+
+        CustomerDto customer = customerService.one(1L);
+        assertNull(customer);
+
+        assertEquals(204, response.getStatus());
     }
 
 }
