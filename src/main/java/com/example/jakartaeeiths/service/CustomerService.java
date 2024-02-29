@@ -63,5 +63,6 @@ public class CustomerService {
 
     public void deleteById(long id) {
         customerRepository.deleteById(id);
+        // todo add http exception if you try to delete user that dont exist, now it will return 204 regardless
     }
 }
