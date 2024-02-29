@@ -1,5 +1,4 @@
 package com.example.jakartaeeiths.service;
-
 import com.example.jakartaeeiths.dto.CustomerDto;
 import com.example.jakartaeeiths.dto.Customers;
 import com.example.jakartaeeiths.entity.Customer;
@@ -16,6 +15,7 @@ import java.time.LocalDateTime;
 
 @ApplicationScoped
 public class CustomerService {
+
 
     CustomerRepository customerRepository;
 
@@ -52,13 +52,13 @@ public class CustomerService {
     }
 
     public Customer add(CustomerDto customerDto) {
-        var p = customerRepository.add(CustomerDto.map(customerDto));
-        return p;
+        var c = customerRepository.add(CustomerDto.map(customerDto));
+        return c;
     }
 
     public Customer update(long id, CustomerDto customerDto) {
-        var p = customerRepository.update(id, customerDto);
-        return p;
+        var c = customerRepository.update(id, customerDto);
+        return c;
     }
 
     public void deleteById(long id) {
