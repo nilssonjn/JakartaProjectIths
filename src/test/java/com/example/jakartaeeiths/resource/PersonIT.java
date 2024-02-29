@@ -1,4 +1,4 @@
-/*package com.example.jakartaeeiths.resource;
+package com.example.jakartaeeiths.resource;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
@@ -50,4 +50,4 @@ class PersonIT {
         boolean hej = true;
         assertTrue(hej);
     }
-}*/
+}
