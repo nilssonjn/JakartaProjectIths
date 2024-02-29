@@ -42,7 +42,7 @@ class CustomerDtoTest {
     }
 
     @Test
-    @DisplayName("cannot exceed max age")
+    @DisplayName("Cannot exceed max age")
     void cannotExceedMaxAge() {
         CustomerDto customer = new CustomerDto("john", "doe", 151);
 
@@ -54,7 +54,7 @@ class CustomerDtoTest {
     }
 
     @Test
-    @DisplayName("age cannot be negative")
+    @DisplayName("Age cannot be negative")
     void ageCannotBeNegative() {
         CustomerDto customer = new CustomerDto("john", "doe", -5);
 
@@ -66,7 +66,7 @@ class CustomerDtoTest {
     }
 
     @Test
-    @DisplayName("customer recieves a name")
+    @DisplayName("Customer recieves a name")
     void customerRecievesAName() {
 
         CustomerDto customerDto = new CustomerDto("test", "person", 15);

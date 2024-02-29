@@ -1,5 +1,4 @@
 package com.example.jakartaeeiths.service;
-
 import com.example.jakartaeeiths.dto.CustomerDto;
 import com.example.jakartaeeiths.dto.Customers;
 import com.example.jakartaeeiths.entity.Customer;
@@ -16,6 +15,7 @@ import java.time.LocalDateTime;
 
 @ApplicationScoped
 public class CustomerService {
+
 
     CustomerRepository customerRepository;
 
@@ -34,8 +34,8 @@ public class CustomerService {
         if (customer == null)
             throw new WebApplicationException(Response.Status.NOT_FOUND);
 
-        if (customer.getCustomerAge() == null || customer.getCustomerSurname() == null || customer.getCustomerFirstName() == null)
-            throw new WebApplicationException(Response.Status.FORBIDDEN);
+        if (customer.getCustomerAge() == null || customer.getCustomerSurname() == null || customer.getCustomerFirstName() == null) // if data is missing from table
+            throw new WebApplicationException(Response.Status.NO_CONTENT);
 
         return CustomerDto.map(customer);
     }
@@ -52,16 +52,19 @@ public class CustomerService {
     }
 
     public Customer add(CustomerDto customerDto) {
-        var p = customerRepository.add(CustomerDto.map(customerDto));
-        return p;
+        var c = customerRepository.add(CustomerDto.map(customerDto));
+        return c;
+        // todo add http exception ???
     }
 
     public Customer update(long id, CustomerDto customerDto) {
-        var p = customerRepository.update(id, customerDto);
-        return p;
+        var c = customerRepository.update(id, customerDto);
+        return c;
+        // todo add http exception ???
     }
 
     public void deleteById(long id) {
         customerRepository.deleteById(id);
+        // todo add http exception if you try to delete user that dont exist, now it will return 204 regardless
     }
 }
