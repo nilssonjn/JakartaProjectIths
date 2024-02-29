@@ -16,6 +16,7 @@ import org.jboss.resteasy.spi.Dispatcher;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,10 +45,9 @@ class CustomerResourceTest {
 
         // dispatcher.getProviderFactory().registerProvider(ConstraintViolationExceptionMapper.class);
     }
-
-
+    
     @Test
-    @DisplayName("create new person with POST returns 201")
+    @DisplayName("create new customer with POST returns 201")
     void createReturnsStatus201() throws URISyntaxException, UnsupportedEncodingException {
         when(customerService.add(Mockito.any())).thenReturn(new Customer());
         // Create a mock request and response
@@ -61,6 +61,36 @@ class CustomerResourceTest {
         assertEquals(201, response.getStatus());
     }
 
+    @Test
+    @DisplayName("Delete customer with DELETE returns 204")
+    void deleteCustomerWithDeleteReturns204() throws URISyntaxException {
+        // Create a mock customer
+        Customer mockCustomer = new Customer();
+        when(customerService.add(Mockito.any())).thenReturn(mockCustomer);
+
+        // Add the mock customer
+        MockHttpRequest postRequest = MockHttpRequest.post("/customers");
+        postRequest.contentType(MediaType.APPLICATION_JSON);
+        postRequest.content("{\"firstName\":\"Test\",\"surname\":\"LastName\",\"age\":100}".getBytes());
+        MockHttpResponse postResponse = new MockHttpResponse();
+        dispatcher.invoke(postRequest, postResponse);
+
+        // Get the created customer's ID (assuming it is returned in the response or can be retrieved from the service)
+        long customerId = 1L;
+
+        // Mock the deletion of the customer
+        doNothing().when(customerService).deleteById(customerId);
+
+        // Delete the customer
+        MockHttpRequest deleteRequest = MockHttpRequest.delete("/customers/" + customerId);
+        MockHttpResponse deleteResponse = new MockHttpResponse();
+        dispatcher.invoke(deleteRequest, deleteResponse);
+
+        // Assert the response status code
+        assertEquals(204, deleteResponse.getStatus());
+    }
+
+    
 
 
 }
