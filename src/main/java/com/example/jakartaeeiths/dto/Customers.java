@@ -7,4 +7,3 @@ import java.util.List;
 
 
 public record Customers (List<CustomerDto> customerDtos, LocalDateTime updated) {}
-
