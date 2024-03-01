@@ -6,6 +6,7 @@ import com.example.jakartaeeiths.entity.Customer;
 import com.example.jakartaeeiths.repository.CustomerRepository;
 import com.example.jakartaeeiths.service.CustomerService;
 import jakarta.ejb.Local;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -141,6 +142,51 @@ class CustomerResourceTest {
         assertNull(customer);
 
         assertEquals(204, response.getStatus());
+    }
+    @Test
+    @DisplayName("update existing customer with PATCH returns 200")
+    void updateReturnsStatus200() throws URISyntaxException, UnsupportedEncodingException {
+
+        long customerId = 1L;
+        CustomerDto updatedCustomerDto = new CustomerDto("UpdatedName", "UpdatedSurname", 50);
+        when(customerService.update(customerId, updatedCustomerDto)).thenReturn(new Customer());
+
+
+        MockHttpRequest request = MockHttpRequest.patch("/customers/" + customerId);
+        request.contentType(MediaType.APPLICATION_JSON);
+        request.content("{\"firstName\":\"UpdatedName\",\"surname\":\"UpdatedSurname\",\"age\":50}".getBytes());
+        MockHttpResponse response = new MockHttpResponse();
+        dispatcher.invoke(request, response);
+
+
+        assertEquals(200, response.getStatus());
+    }
+    //
+    @Test
+    @DisplayName("get one customer by id returns status 200")
+    void getOneById_ReturnsStatus200() throws Exception {
+        long customerId = 1L;
+        CustomerDto customerDto = new CustomerDto("John", "Doe", 30);
+
+        when(customerService.one(customerId)).thenReturn(customerDto);
+        MockHttpRequest request = MockHttpRequest.get("/customers/" + customerId);
+        MockHttpResponse response = new MockHttpResponse();
+        dispatcher.invoke(request, response);
+        assertEquals(200, response.getStatus());
+
+        assertEquals("{\"firstName\":\"John\",\"surname\":\"Doe\",\"age\":30}", response.getContentAsString());
+    }
+    @Test
+    @DisplayName("get one customer by non-existing ID returns 404")
+    void getOneByNonExistingId_ReturnsStatus404() throws URISyntaxException {
+        long nonExistingId = 999L;
+        when(customerService.one(nonExistingId)).thenThrow(new NotFoundException());
+
+        MockHttpRequest request = MockHttpRequest.get("/customers/" + nonExistingId);
+        MockHttpResponse response = new MockHttpResponse();
+        dispatcher.invoke(request, response);
+
+        assertEquals(404, response.getStatus());
     }
 
 }
