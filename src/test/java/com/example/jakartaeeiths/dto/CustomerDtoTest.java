@@ -1,17 +1,14 @@
 package com.example.jakartaeeiths.dto;
 
 import com.example.jakartaeeiths.entity.Customer;
-import jakarta.validation.Validator;
 import jakarta.validation.Validation;
-import jakarta.validation.ValidatorFactory;
-import org.assertj.core.api.Assert;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerDtoTest {
     private Validator validator;
@@ -66,8 +63,8 @@ class CustomerDtoTest {
     }
 
     @Test
-    @DisplayName("Customer recieves a name")
-    void customerRecievesAName() {
+    @DisplayName("Customer receives a name")
+    void customerReceivesAName() {
 
         CustomerDto customerDto = new CustomerDto("test", "person", 15);
 
@@ -96,7 +93,6 @@ class CustomerDtoTest {
         customer.setCustomerAge(30);
 
         // Map Customer to CustomerDto
-
         CustomerDto customerDto = CustomerDto.map(customer);
 
         // Check if the mapping is correct

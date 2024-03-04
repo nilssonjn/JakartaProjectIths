@@ -15,19 +15,14 @@ import java.time.LocalDateTime;
 
 @ApplicationScoped
 public class CustomerService {
-
-
     CustomerRepository customerRepository;
 
-    public CustomerService() {
-
-    }
+    public CustomerService() {}
 
     @Inject
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-
 
     public CustomerDto one(long id) {
         var customer = customerRepository.findById(id);
@@ -54,17 +49,14 @@ public class CustomerService {
     public Customer add(CustomerDto customerDto) {
         var c = customerRepository.add(CustomerDto.map(customerDto));
         return c;
-        // todo add http exception ???
     }
 
     public Customer update(long id, CustomerDto customerDto) {
         var c = customerRepository.update(id, customerDto);
         return c;
-        // todo add http exception ???
     }
 
     public void deleteById(long id) {
         customerRepository.deleteById(id);
-        // todo add http exception if you try to delete user that dont exist, now it will return 204 regardless
     }
 }

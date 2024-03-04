@@ -3,35 +3,31 @@ package com.example.jakartaeeiths.resource;
 import com.example.jakartaeeiths.dto.CustomerDto;
 import com.example.jakartaeeiths.dto.Customers;
 import com.example.jakartaeeiths.entity.Customer;
-import com.example.jakartaeeiths.repository.CustomerRepository;
 import com.example.jakartaeeiths.service.CustomerService;
-import jakarta.ejb.Local;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.mock.MockDispatcherFactory;
 import org.jboss.resteasy.mock.MockHttpRequest;
 import org.jboss.resteasy.mock.MockHttpResponse;
+import org.jboss.resteasy.spi.Dispatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jboss.resteasy.spi.Dispatcher;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -51,8 +47,6 @@ class CustomerResourceTest {
         dispatcher = MockDispatcherFactory.createDispatcher();
         var resource = new CustomerResource(customerService);
         dispatcher.getRegistry().addSingletonResource(resource);
-
-        // dispatcher.getProviderFactory().registerProvider(ConstraintViolationExceptionMapper.class);
     }
     
     @Test
@@ -131,7 +125,6 @@ class CustomerResourceTest {
     @Test
     @DisplayName("if customer is null then return 204")
     void ifCustomerIsNullThenReturn404() throws Exception {
-
         when(customerService.one(1L)).thenReturn(null);
         // use "one" method in customerService to test
         MockHttpRequest request = MockHttpRequest.get("/customers/1");
@@ -146,11 +139,9 @@ class CustomerResourceTest {
     @Test
     @DisplayName("update existing customer with PATCH returns 200")
     void updateReturnsStatus200() throws URISyntaxException, UnsupportedEncodingException {
-
         long customerId = 1L;
         CustomerDto updatedCustomerDto = new CustomerDto("UpdatedName", "UpdatedSurname", 50);
         when(customerService.update(customerId, updatedCustomerDto)).thenReturn(new Customer());
-
 
         MockHttpRequest request = MockHttpRequest.patch("/customers/" + customerId);
         request.contentType(MediaType.APPLICATION_JSON);
@@ -161,7 +152,7 @@ class CustomerResourceTest {
 
         assertEquals(200, response.getStatus());
     }
-    //
+
     @Test
     @DisplayName("get one customer by id returns status 200")
     void getOneById_ReturnsStatus200() throws Exception {
@@ -176,6 +167,7 @@ class CustomerResourceTest {
 
         assertEquals("{\"firstName\":\"John\",\"surname\":\"Doe\",\"age\":30}", response.getContentAsString());
     }
+
     @Test
     @DisplayName("get one customer by non-existing ID returns 404")
     void getOneByNonExistingId_ReturnsStatus404() throws URISyntaxException {

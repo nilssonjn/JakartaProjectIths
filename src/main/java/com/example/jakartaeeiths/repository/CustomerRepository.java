@@ -32,7 +32,6 @@ public class CustomerRepository implements Serializable {
         return entityManager.find(Customer.class, id);
     }
 
-
     /**deletes customer*/
     @Transactional
     public void deleteById(long id) {

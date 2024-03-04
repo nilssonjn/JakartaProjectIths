@@ -25,13 +25,6 @@ public class CustomerResource {
         this.customerService = customerRepository;
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response sayHello() {
-//        String message = "Hello!";
-//        return Response.ok(message).build();
-//    }
-
     /**READ*/
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -59,8 +52,6 @@ public class CustomerResource {
                 .build();
     }
 
-
-
     // DELETE
     @DELETE
     @Path("{id}")
@@ -70,7 +61,6 @@ public class CustomerResource {
         return Response.noContent().build();
     }
 
-
     // UPDATE
     @PATCH
     @Path("{id}")
@@ -79,6 +69,4 @@ public class CustomerResource {
     public Customer update(@PathParam("id") long id, CustomerDto customerDto)  {
         return customerService.update(id, customerDto);
     }
-
-    //https://jakarta.ee/learn/starter-guides/how-to-store-and-retrieve-data-using-jakarta-persistence/
 }
